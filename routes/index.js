@@ -1,7 +1,5 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+router.use('/products', require('./products'));
 
-router.get('/', function(req, res){
-    res.send('Hello World');
-});
-module.exports = router
+module.exports = router;
