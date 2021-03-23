@@ -5,7 +5,15 @@ module.exports = {
     let obj = req.body;
     try {
       let product = new productModel(obj);
-      data = await product.save();
+      let data = await product.save();
+      res.send(data);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  },
+  read: async (req, res) => {
+    try {
+      let data = await productModel.find().exec();
       res.send(data);
     } catch (err) {
       res.status(400).send(err);
