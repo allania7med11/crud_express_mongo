@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const dotenv = require("dotenv");
 if (process.env.NODE_ENV === "production") {
   dotenv.config();
@@ -9,6 +10,10 @@ require("dotenv").config();
 const dbConnection = require("./db");
 dbConnection();
 const app = express();
+if (process.env.NODE_ENV !== "production") {
+  app.use(cors());
+}
+
 app.use(express.json());
 const routes = require("./routes");
 app.use("/api", routes);
