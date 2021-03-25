@@ -1,8 +1,10 @@
 const { productModel } = require("../models");
-
+const fields = ["name", "price", "description"];
 module.exports = {
   create: async (req, res) => {
-    let obj = req.body;
+    let obj = fields.reduce((acc, elm) => {
+      acc[elm] = req.body[elm];
+    }, {});
     try {
       let product = new productModel(obj);
       let data = await product.save();
@@ -13,7 +15,7 @@ module.exports = {
   },
   read: async (req, res) => {
     try {
-      let data = await productModel.find().exec();
+      let data = await productModel.find().sort({ _id: -1 }).exec();
       res.send(data);
     } catch (err) {
       res.status(400).send(err);
@@ -21,27 +23,25 @@ module.exports = {
   },
   update: async (req, res) => {
     let id = req.params.id;
-    let obj = req.body;
+    let obj = fields.reduce((acc, elm) => {
+      acc[elm] = req.body[elm];
+    }, {});
     try {
-        let data = await productModel.findOneAndUpdate(
-            { _id: id },
-            obj,
-            {new: true}
-        );
-        res.send(data);
+      let data = await productModel.findOneAndUpdate({ _id: id }, obj, {
+        new: true,
+      });
+      res.send(data);
     } catch (err) {
-        res.status(400).send(err);
+      res.status(400).send(err);
     }
   },
   delete: async (req, res) => {
     let id = req.params.id;
     try {
-        let data = await productModel.findByIdAndRemove(
-            { _id: id }
-        );
-        res.send(data);
+      let data = await productModel.findByIdAndRemove({ _id: id });
+      res.send(data);
     } catch (err) {
-        res.status(400).send(err);
+      res.status(400).send(err);
     }
   },
 };
