@@ -15,6 +15,9 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(express.json());
+app.use((req,res,next) => {
+  next()
+})
 const routes = require("./routes");
 app.use("/api", routes);
 let domain = process.env.Domain || "http://localhost";

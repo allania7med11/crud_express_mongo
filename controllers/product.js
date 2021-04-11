@@ -4,6 +4,7 @@ module.exports = {
   create: async (req, res) => {
     let obj = fields.reduce((acc, elm) => {
       acc[elm] = req.body[elm];
+      return acc
     }, {});
     try {
       let product = new productModel(obj);
@@ -25,6 +26,7 @@ module.exports = {
     let id = req.params.id;
     let obj = fields.reduce((acc, elm) => {
       acc[elm] = req.body[elm];
+      return acc
     }, {});
     try {
       let data = await productModel.findOneAndUpdate({ _id: id }, obj, {
